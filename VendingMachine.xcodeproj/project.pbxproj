@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22759B7E1F76B3FC0051D1EF /* DepositViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22759B7D1F76B3FC0051D1EF /* DepositViewController.swift */; };
 		9771F6B51DF0833300B2B06D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9771F6B41DF0833300B2B06D /* AppDelegate.swift */; };
 		9771F6B71DF0833300B2B06D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9771F6B61DF0833300B2B06D /* ViewController.swift */; };
 		9771F6BA1DF0833300B2B06D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9771F6B81DF0833300B2B06D /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		22759B7D1F76B3FC0051D1EF /* DepositViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DepositViewController.swift; sourceTree = "<group>"; };
 		9771F6B11DF0833300B2B06D /* VendingMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VendingMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9771F6B41DF0833300B2B06D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9771F6B61DF0833300B2B06D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			children = (
 				9771F6B41DF0833300B2B06D /* AppDelegate.swift */,
 				9771F6B61DF0833300B2B06D /* ViewController.swift */,
+				22759B7D1F76B3FC0051D1EF /* DepositViewController.swift */,
 				9771F6C61DF0A6C000B2B06D /* VendingItemCell.swift */,
 				BEF0E7B31DF71E6A001410F7 /* VendingMachine.swift */,
 				9771F6B81DF0833300B2B06D /* Main.storyboard */,
@@ -152,6 +155,7 @@
 				9771F6B51DF0833300B2B06D /* AppDelegate.swift in Sources */,
 				9771F6C71DF0A6C000B2B06D /* VendingItemCell.swift in Sources */,
 				BEF0E7B41DF71E6A001410F7 /* VendingMachine.swift in Sources */,
+				22759B7E1F76B3FC0051D1EF /* DepositViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

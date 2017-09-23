@@ -62,6 +62,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         collectionView.collectionViewLayout = layout
     }
+    
     // MARK: - Vending Machine
     
     @IBAction func purchase() {
@@ -69,14 +70,21 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             do {
                 try vendingMachine.vend(selection: currentSelection, quantity: Int(quantityStepper.value))
                 updateDisplayWith(balance: vendingMachine.amountDeposited, totalPrice: 0.0, itemPrice: 0.0, itemQuantity: 0)
+            } catch VendingMachineError.outOfStock {
+                showAlert(title: "Out of Stock", message: "This item is unavailable. Please, make another selection")
+            } catch VendingMachineError.invalidSelection {
+                showAlert(title: "Invalid Selection", message: "Please, make another selection")
+            } catch VendingMachineError.insufficientFunds(let required) {
+                let message = "You need $\(required) to complete the transaction"
+                showAlert(title: "Insufficient Funds", message: message)
             } catch {
-                // FIXME: Error handling code
+                fatalError("\(error)")
             }
             if let indexPath = collectionView.indexPathsForSelectedItems?.first {
                 collectionView.deselectItem(at: indexPath, animated: true)
                 updateCell(having: indexPath, selected: false)
             }
-            
+            self.currentSelection = nil
         } else {
             // FIXME: Alert user to no selection
         }
@@ -93,7 +101,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             priceLabel.text = "$\(priceValue)"
         }
         if let quantityValue = itemQuantity {
-            quantityLabel.text = "$\(quantityValue)"
+            quantityLabel.text = "\(quantityValue)"
         }
     }
     
@@ -108,6 +116,24 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             updateTotalPrice(for: item)
         }
     }
+    
+    func showAlert(title: String, message: String, style: UIAlertControllerStyle = .alert) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: style)
+
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: dismissAlert))
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func dismissAlert(sender: UIAlertAction) -> Void {
+        updateDisplayWith(totalPrice: 0, itemPrice: 0, itemQuantity: 0)
+    }
+    
+    @IBAction func depositFunds() {
+        vendingMachine.deposit(5)
+        updateDisplayWith(balance: vendingMachine.amountDeposited)
+    }
+    
 
     // MARK: - UICollectionViewDataSource
     
@@ -161,5 +187,4 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             cell.contentView.backgroundColor = selected ? selectedBackgroundColor : defaultBackgroundColor
         }
     }
-    
 }
