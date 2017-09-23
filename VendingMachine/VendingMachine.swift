@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum VendingSelection {
+enum VendingSelection: String {
     case soda
     case dietSoda
     case chips
@@ -43,6 +43,41 @@ struct Item: VendingItem {
     var quantity: Int
 }
 
+enum InventoryError: Error {
+    case invalidResource
+    case conversionFailure
+    case invalidSelection
+}
+
+class PlistConverter {
+    static func dictionary(from file: String, ofType type: String) throws -> [String: AnyObject] {
+        guard let path = Bundle.main.path(forResource: file, ofType: type) else {
+            throw InventoryError.invalidResource
+        }
+        guard let dictionary = NSDictionary(contentsOfFile: path) as? [String: AnyObject] else {
+            throw InventoryError.conversionFailure
+        }
+        return dictionary
+    }
+}
+
+class InventoryUnarchiver {
+    static func vendingInventory(fromDictionary dictionary: [String: AnyObject]) throws -> [VendingSelection: VendingItem] {
+        var inventory: [VendingSelection: VendingItem] = [:]
+        for (key, value) in dictionary {
+            if let itemDictionary = value as? [String: Any], let price = itemDictionary["price"] as? Double, let quantity = itemDictionary["quantity"] as? Int {
+                let item = Item(price: price, quantity: quantity)
+                
+                guard let selection = VendingSelection(rawValue: key) else {
+                    throw InventoryError.invalidSelection
+                }
+                inventory.updateValue(item, forKey: selection)
+            }
+        }
+        return inventory
+    }
+}
+
 class FoodVendingMachine: VendingMachine {
     let selection: [VendingSelection] = [.soda, .dietSoda, .chips, .cookie, .wrap, .sandwich, .candyBar, .popTart, .water, .fruitJuice, .sportsDrink, .gum]
     var inventory: [VendingSelection : VendingItem]
@@ -51,7 +86,7 @@ class FoodVendingMachine: VendingMachine {
     required init(inventory: [VendingSelection : VendingItem]) {
         self.inventory = inventory
     }
-    
+
     func vend(_ quantity: Int, _ selection: VendingSelection) throws {
     }
     
